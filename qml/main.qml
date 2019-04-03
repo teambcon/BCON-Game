@@ -5,9 +5,26 @@ import QtQuick.VirtualKeyboard 2.2
 Window {
     id: window
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
+    width: 800
+    height: 800
+    title: qsTr("Skee-Ball")
+
+
+    Loader {
+        id: mainGameLoader
+        anchors.fill: parent
+        source: "qrc:/SplashScreen.qml"
+    }
+
+
+    Timer {
+        id: splashScreenTimer
+        interval: 500
+        running: true
+        repeat: false
+
+        onTriggered: mainWindowLoader.source = "qrc:/BaseView.qml"
+    }
 
     InputPanel {
         id: inputPanel

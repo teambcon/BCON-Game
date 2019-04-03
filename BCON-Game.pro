@@ -13,7 +13,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        src/main.cpp
+        src/main.cpp \
+    src/datamanager.cpp
 
 RESOURCES += qml/qml.qrc
 
@@ -37,3 +38,6 @@ unix:!macx: LIBS += -L$$PWD/libBCONNetwork/lib/Linux/ -lBCONNetwork
 
 INCLUDEPATH += $$PWD/libBCONNetwork/lib/Linux/include
 DEPENDPATH += $$PWD/libBCONNetwork/lib/Linux/include
+
+HEADERS += \
+    src/datamanager.h

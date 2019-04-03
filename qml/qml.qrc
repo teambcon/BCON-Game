@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>SplashScreen.qml</file>
+        <file>BaseView.qml</file>
+        <file>MenuButton.qml</file>
+        <file>playGameOverlay.qml</file>
     </qresource>
 </RCC>
