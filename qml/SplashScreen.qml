@@ -7,7 +7,7 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#ff4500"
+        color: "dimgrey"
 
         Item {
             id: centeredContainer

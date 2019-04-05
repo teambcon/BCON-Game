@@ -53,34 +53,28 @@ Item {
             height: 128
         }
 
-        Column {
-            id: actionButtons
-            anchors.top: subHeader.bottom
-            anchors.topMargin: 60
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 30
-            visible: false
+        MenuButton {
+            id: playGame
+            anchors.centerIn: parent
+            buttonWidth: 600
+            buttonHeight: 120
+            buttonText: qsTr( "Play Skee-Ball!" )
 
-            MenuButton {
-                id: playGame
-                anchors.horizontalCenter: parent.horizontalCenter
-                buttonWidth: 400
-                buttonHeight: 75
-                buttonText: qsTr( "Play Skee-Ball!" )
-
-                onClicked: playGameOverlay.visible = true
-            }
-
-            MenuButton {
-                id: exitButton
-                anchors.horizontalCenter: parent.horizontalCenter
-                buttonWidth: 400
-                buttonHeight: 75
-                buttonText: qsTr( "Exit" )
-
-                onClicked: baseView.state = "idle"
-            }
+            onClicked: playGameOverlay.visible = true
         }
+
+        MenuButton {
+            id: exitButton
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 40
+            anchors.horizontalCenter: parent.horizontalCenter
+            buttonWidth: 400
+            buttonHeight: 75
+            buttonText: qsTr( "Exit" )
+
+            onClicked: baseView.state = "idle"
+        }
+
     }
 
 
@@ -105,11 +99,6 @@ Item {
             name: "idle"
 
             PropertyChanges {
-                target: statusBar
-                visible: false
-            }
-
-            PropertyChanges {
                 target: header
                 text: qsTr( "Skee-Ball" )
             }
@@ -127,10 +116,10 @@ Item {
             }
 
 
-//            PropertyChanges {
-//                target: // enough tokens?
-//                visible: false
-//            }
+            //            PropertyChanges {
+            //                target: // enough tokens?
+            //                visible: false
+            //            }
 
             PropertyChanges {
                 target: rfidIcon
@@ -151,10 +140,10 @@ Item {
                 text: qsTr( "Good luck, " + DataManager.firstName + "!" )
             }
 
-//            PropertyChanges {
-//                target: // skeeBall Slots
-//                visible: true
-//            }
+            //            PropertyChanges {
+            //                target: // skeeBall Slots
+            //                visible: true
+            //            }
 
             PropertyChanges {
                 target: rfidIcon
