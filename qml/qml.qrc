@@ -4,6 +4,7 @@
         <file>SplashScreen.qml</file>
         <file>BaseView.qml</file>
         <file>MenuButton.qml</file>
-        <file>playGameOverlay.qml</file>
+        <file>PlayGameOverlay.qml</file>
+        <file>LookupOverlay.qml</file>
     </qresource>
 </RCC>

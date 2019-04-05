@@ -16,7 +16,8 @@ SOURCES += \
         src/main.cpp \
     src/datamanager.cpp
 
-RESOURCES += qml/qml.qrc
+RESOURCES += qml/qml.qrc \
+    resources/resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

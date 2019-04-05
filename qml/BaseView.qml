@@ -12,7 +12,7 @@ Item {
     Connections {
         target: DataManager
         onCardInserted: {
-            if ( ( "idle" == baseView.state ) && ( !lookupOverlay.visible ) )
+            if ( ( "idle" == baseView.state ) && ( !playGameOverlay.visible ) )
             {
                 lookupOverlay.visible = true
             }
@@ -22,7 +22,7 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#ff4500"
+        color: "dimgray"
 
         Text {
             id: header
@@ -54,7 +54,7 @@ Item {
         }
 
         MenuButton {
-            id: playGame
+            id: playGameButton
             anchors.centerIn: parent
             buttonWidth: 600
             buttonHeight: 120
@@ -74,10 +74,7 @@ Item {
 
             onClicked: baseView.state = "idle"
         }
-
     }
-
-
 
     MouseArea {
         id: keyboardMask
@@ -109,21 +106,19 @@ Item {
                 text: qsTr( "Please tap your RFID card." )
             }
 
-
-            PropertyChanges {
-                target: actionButtons
-                visible: false
-            }
-
-
-            //            PropertyChanges {
-            //                target: // enough tokens?
-            //                visible: false
-            //            }
-
             PropertyChanges {
                 target: rfidIcon
                 visible: true
+            }
+
+            PropertyChanges {
+                target: playGameButton
+                visible: false
+            }
+
+            PropertyChanges {
+                target: exitButton
+                visible: false
             }
         },
 
@@ -131,23 +126,23 @@ Item {
             name: "active"
 
             PropertyChanges {
-                target: statusBar
-                visible: true
-            }
-
-            PropertyChanges {
                 target: header
-                text: qsTr( "Good luck, " + DataManager.firstName + "!" )
+                text: qsTr( "Good luck, " + DataManager.screenName + "!" )
             }
-
-            //            PropertyChanges {
-            //                target: // skeeBall Slots
-            //                visible: true
-            //            }
 
             PropertyChanges {
                 target: rfidIcon
                 visible: false
+            }
+
+            PropertyChanges {
+                target: playGameButton
+                visible: true
+            }
+
+            PropertyChanges {
+                target: exitButton
+                visible: true
             }
         }
 
