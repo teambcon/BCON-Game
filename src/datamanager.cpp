@@ -15,13 +15,11 @@ static DataManager *pInstance = nullptr;
 DataManager::DataManager( QObject * pParent ) : QObject( pParent )
 {
     sCurrentPlayerId = "";
-    sCurrentPlayerFirstName = "";
-    sCurrentPlayerLastName = "";
     sCurrentPlayerScreenName = "";
     iCurrentPlayerTokens = -1;
     iCurrentPlayerTickets = -1;
     iLastStatusCode = 0;
-    iSkeeBallCost = 0;
+    iTokenCost = 0;
 
     /* Wire up to the NFCManager signals. */
     connect( NFCManager::instance(), SIGNAL( cardInserted() ), this, SLOT( on_nfcManagerCardInserted() ) );
@@ -29,12 +27,10 @@ DataManager::DataManager( QObject * pParent ) : QObject( pParent )
 
     /* Subscribe to player information. */
     DataStore::subscribe( "playerId",    this );
-    DataStore::subscribe( "firstName",   this );
-    DataStore::subscribe( "lastName",    this );
     DataStore::subscribe( "screenName",  this );
     DataStore::subscribe( "tokens",      this );
     DataStore::subscribe( "tickets",     this );
-    DataStore::subscribe( "gameStats.$", this );
+    DataStore::subscribe( "tokenCost",   this );
 
     /* Subscribe to the HTTP status code for errors. */
     DataStore::subscribe( "statusCode", this );
@@ -56,25 +52,6 @@ void DataManager::handleData( const DataPoint & Data )
 {
     QRegularExpression Regex;
     QRegularExpressionMatch Matches;
-
-    /* Player data. */
-    Regex.setPattern( "^firstName$" );
-    Matches = Regex.match( Data.sTag );
-    if ( Matches.hasMatch() )
-    {
-        sCurrentPlayerFirstName = Data.Value.toString();
-        emit firstNameChanged();
-        return;
-    }
-
-    Regex.setPattern( "^lastName$" );
-    Matches = Regex.match( Data.sTag );
-    if ( Matches.hasMatch() )
-    {
-        sCurrentPlayerLastName = Data.Value.toString();
-        emit lastNameChanged();
-        return;
-    }
 
     Regex.setPattern( "^screenName$" );
     Matches = Regex.match( Data.sTag );
@@ -103,6 +80,15 @@ void DataManager::handleData( const DataPoint & Data )
         return;
     }
 
+    Regex.setPattern( "^tokenCost$" );
+    Matches = Regex.match( Data.sTag );
+    if ( Matches.hasMatch() )
+    {
+        iTokenCost = Data.Value.toInt();
+        emit tokenCostChanged();
+        return;
+    }
+
     /* Error codes. */
     Regex.setPattern( "^statusCode$" );
     Matches = Regex.match( Data.sTag );
@@ -112,16 +98,25 @@ void DataManager::handleData( const DataPoint & Data )
         emit statusCodeChanged();
         return;
     }
-
-    Regex.setPattern( "^tokenCost$" );
-    Matches = Regex.match( Data.sTag );
-    if ( Matches.hasMatch() )
-    {
-        iSkeeBallCost = Data.Value.toInt();
-        emit tokenCostChanged();
-        return;
-    }
 }
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void DataManager::deductTokens()
+{
+    iCurrentPlayerTokens -= iTokenCost;
+    pBackend->updatePlayerTokens( sCurrentPlayerId, iCurrentPlayerTokens);
+    emit tokensChanged();
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+void DataManager::publishStats( const int & iTickets, const int & iScore)
+{
+    /* Update the backend with the player's game stats */
+    pBackend->publishPlayerStats( sCurrentPlayerId, sGameId, iTickets, iScore) ;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 void DataManager::on_nfcManagerCardInserted()
@@ -138,12 +133,6 @@ void DataManager::on_nfcManagerCardRead( const QString & sId )
 
     /* Fetch the player information from the backend. */
     pBackend->getPlayer( sId );
-}
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-void DataManager::createPlayer( const QString & sFirstName, const QString & sLastName, const QString & sScreenName )
-{
-    pBackend->createPlayer( sCurrentPlayerId, sFirstName, sLastName, sScreenName );
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
 

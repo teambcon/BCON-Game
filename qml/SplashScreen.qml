@@ -28,7 +28,7 @@ Item {
                 font.pixelSize: 24
                 horizontalAlignment: Text.AlignHCenter
                 color: "white"
-                text: qsTr( "Starting Kiosk..." )
+                text: qsTr( "Starting Skee-Ball..." )
             }
 
         }

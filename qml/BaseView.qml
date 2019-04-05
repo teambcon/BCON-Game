@@ -127,10 +127,10 @@ Item {
             }
 
 
-            PropertyChanges {
-                target: // enough tokens?
-                visible: false
-            }
+//            PropertyChanges {
+//                target: // enough tokens?
+//                visible: false
+//            }
 
             PropertyChanges {
                 target: rfidIcon
@@ -151,10 +151,10 @@ Item {
                 text: qsTr( "Good luck, " + DataManager.firstName + "!" )
             }
 
-            PropertyChanges {
-                target: // skeeBall Slots
-                visible: true
-            }
+//            PropertyChanges {
+//                target: // skeeBall Slots
+//                visible: true
+//            }
 
             PropertyChanges {
                 target: rfidIcon

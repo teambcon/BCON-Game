@@ -26,8 +26,8 @@ Item {
             anchors.leftMargin: 40
             anchors.right: parent.right
             anchors.rightMargin: 40
-            model: // playGame model
-            height: 400
+           // model: // playGame model
+          //  height: 400
 
             delegate: Text {
                 font.pixelSize: 24

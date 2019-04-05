@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
     /* Bring in the Virtual Keyboard. */
     qputenv( "QT_IM_MODULE", QByteArray( "qtvirtualkeyboard" ) );
 
+    QCoreApplication::setApplicationName( "BCON Game" );
+    QCoreApplication::setApplicationVersion( "1.0.0" );
     QCoreApplication::setAttribute( Qt::AA_EnableHighDpiScaling );
 
     QGuiApplication App( argc, argv );
