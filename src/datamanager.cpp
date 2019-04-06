@@ -132,7 +132,7 @@ void DataManager::on_nfcManagerCardRead( const QString & sId )
     emit playerIdChanged();
 
     /* Fetch the player information from the backend. */
-    pBackend->getPlayer( sId );
+    pBackend->getPlayer( sCurrentPlayerId );
 }
 /*--------------------------------------------------------------------------------------------------------------------*/
 

@@ -12,7 +12,7 @@ Item {
     Connections {
         target: DataManager
         onCardInserted: {
-            if ( ( "idle" == baseView.state ) && ( !playGameOverlay.visible ) )
+            if ( ( "idle" == baseView.state ) && ( !lookupOverlay.visible ) )
             {
                 lookupOverlay.visible = true
             }
@@ -73,6 +73,43 @@ Item {
             buttonText: qsTr( "Exit" )
 
             onClicked: baseView.state = "idle"
+        }
+
+        LookupOverlay {
+            id: lookupOverlay
+            anchors.fill: parent
+            visible: false
+
+            onExistingPlayer: {
+                if ( "idle" == baseView.state )
+                {
+                    if ( DataManager.tokens < DataManager.tokenCost )
+                    {
+                        baseView.state = "notEnoughTokens";
+
+                    }
+                    else
+                    {
+                        baseView.state = "active";
+
+                    }
+
+                    lookupOverlay.visible = false;
+                }
+            }
+
+            onNewPlayer: {
+                if ( "idle" == baseView.state )
+                {
+                    baseView.state = "newPlayer";
+                }
+            }
+        }
+
+        PlayGameOverlay {
+            id: playGameOverlay
+            anchors.fill: parent
+            visible: false
         }
     }
 
@@ -138,6 +175,55 @@ Item {
             PropertyChanges {
                 target: playGameButton
                 visible: true
+            }
+
+            PropertyChanges {
+                target: exitButton
+                visible: true
+            }
+
+        },
+
+        State {
+            name: "newPlayer"
+
+            PropertyChanges {
+                target: header
+                text: qsTr( "Please go to a Kiosk and register your account before playing this game!" )
+            }
+
+            PropertyChanges {
+                target: rfidIcon
+                visible: false
+            }
+
+            PropertyChanges {
+                target: playGameButton
+                visible: false
+            }
+
+            PropertyChanges {
+                target: exitButton
+                visible: true
+            }
+        },
+
+        State {
+            name: "notEnoughTokens"
+
+            PropertyChanges {
+                target: header
+                text: qsTr( "You don't have enough tokens.\n Please visit a Kiosk to add more tokens to your account." )
+            }
+
+            PropertyChanges {
+                target: rfidIcon
+                visible: false
+            }
+
+            PropertyChanges {
+                target: playGameButton
+                visible: false
             }
 
             PropertyChanges {

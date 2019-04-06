@@ -5,8 +5,8 @@ import QtQuick.VirtualKeyboard 2.2
 Window {
     id: window
     visible: true
-    width: 1200
-    height: 1000
+    width: 1000
+    height: 800
     title: qsTr("Skee-Ball")
 
 
