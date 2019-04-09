@@ -8,7 +8,7 @@ Item {
     id: playGameOverlay
     state: "activePlay"
     property int score: 0
-    property int numberOfRolls: 6
+    property int numberOfRolls: 3
     property int currentRoll: 0
 
     onVisibleChanged: {
@@ -16,7 +16,7 @@ Item {
         {
             playGameOverlay.state = "activePlay"
             score = 0;
-            numberOfRolls = 6;
+            numberOfRolls = 3;
             currentRoll = 0;
         }
     }
@@ -30,16 +30,22 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#eee8aa"
+        color: "orange"
 
-        MenuButton {
-            id: rollBall
-            anchors.centerIn: parent
-            buttonHeight: 300
-            buttonWidth: 75
-            buttonText: qsTr( "Roll" )
+        AnimatedImage {
+            id: skeeBallIcon
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 100
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: "qrc:/images/skee-ball.gif"
+            width: 400
+            height: 400
 
-            onClicked: playGameOverlay.state = "rollResults";
+            MouseArea {
+                id: skeeBallClickable
+                anchors.fill: parent
+                onClicked: playGameOverlay.state = "rollResults"
+            }
         }
 
         MenuButton {
@@ -58,33 +64,43 @@ Item {
             id: nextRollButton
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 40
+            anchors.bottomMargin: 100
             buttonWidth: 300
             buttonHeight: 75
-            buttonText: qsTr( "Click for Next Roll\n" + numberOfRolls + " rolls remaining." )
+            buttonText: qsTr( "Click for next roll\n" + numberOfRolls + " rolls remaining." )
 
             onClicked: numberOfRolls == 0? playGameOverlay.state = "gameOver" : playGameOverlay.state = "activePlay";
         }
 
         Text {
-            id: rollResultText
+            id: playGameText
             anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: -225
             font.pixelSize: 28
             font.bold: true
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignHCenter
-            color: "green"
+            anchors.bottomMargin: 100
+            color: "blue"
+            text: qsTr( "Click the image to make your roll." )
+        }
+
+        Text {
+            id: rollResultText
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 46
+            font.bold: true
+            color: "blue"
             text: qsTr( "You rolled " + currentRoll + "." )
         }
 
         Text {
             id: gameOverText
             anchors.horizontalCenter: parent.horizontalCenter
-            font.pixelSize: 28
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 32
             font.bold: true
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignHCenter
-            color: "green"
+            color: "black"
             text: qsTr( "Game over. You scored a total of " + score + " and gained " + score / 10 + " tickets." )
         }
 
@@ -96,7 +112,8 @@ Item {
             score += currentRoll;
             numberOfRolls -= 1;
             if(numberOfRolls == 0) {
-                DataManager.publishStats( score, score );
+                console.log("id ", DataManager.playerId);
+                DataManager.publishStats( score / 10, score );
                 DataManager.deductTokens()
             }
         }
@@ -107,7 +124,11 @@ Item {
             name: "activePlay"
 
             PropertyChanges {
-                target: rollBall
+                target: skeeBallIcon
+                visible: true
+            }
+            PropertyChanges {
+                target: playGameText
                 visible: true
             }
 
@@ -137,7 +158,12 @@ Item {
             name: "rollResults"
 
             PropertyChanges {
-                target: rollBall
+                target: skeeBallIcon
+                visible: false
+            }
+
+            PropertyChanges {
+                target: playGameText
                 visible: false
             }
 
@@ -166,7 +192,12 @@ Item {
             name: "gameOver"
 
             PropertyChanges {
-                target: rollBall
+                target: skeeBallIcon
+                visible: false
+            }
+
+            PropertyChanges {
+                target: playGameText
                 visible: false
             }
 

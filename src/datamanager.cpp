@@ -114,7 +114,8 @@ void DataManager::deductTokens()
 void DataManager::publishStats( const int & iTickets, const int & iScore)
 {
     /* Update the backend with the player's game stats */
-    pBackend->publishPlayerStats( sCurrentPlayerId, sGameId, iTickets, iScore) ;
+    qDebug( )<< "id " + sCurrentPlayerId + " game " + GAME_ID + " " + QString::number(iTickets) + " " + QString::number(iScore);
+    pBackend->publishPlayerStats( sCurrentPlayerId, GAME_ID, iTickets, iScore) ;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

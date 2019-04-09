@@ -83,6 +83,8 @@ Item {
             onExistingPlayer: {
                 if ( "idle" == baseView.state )
                 {
+
+                    console.log("hey ", DataManager.tokens, " ", DataManager.tokenCost);
                     if ( DataManager.tokens < DataManager.tokenCost )
                     {
                         baseView.state = "notEnoughTokens";

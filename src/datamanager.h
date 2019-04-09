@@ -7,6 +7,8 @@
 
 #include <BCONNetwork/bconnetwork.h>
 
+#define GAME_ID "5c98444ed5229719ab65bdaf"
+
 class DataManager : public QObject, public DataSubscriber
 {
     Q_OBJECT
@@ -34,7 +36,7 @@ signals:
 
 public slots:
     void handleData( const DataPoint & Data ) override;
-    void publishStats( const int & tickets, const int & tokens);
+    void publishStats( const int & tickets, const int & tokens );
     void deductTokens();
 
 private slots:

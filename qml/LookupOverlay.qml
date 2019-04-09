@@ -25,7 +25,7 @@ Item {
             }
         }
 
-        onScreenNameChanged: {
+        onTokensChanged: {
             if ( lookupOverlay.visible )
             {
                 lookupOverlay.existingPlayer();

@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 
     /* Initialize the BCON network. */
     pBackend = new BCONNetwork( sServerAddress, bUseNFC );
+    pBackend->getGame(GAME_ID);
 
     return App.exec();
 }
