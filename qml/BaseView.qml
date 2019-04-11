@@ -43,6 +43,26 @@ Item {
             font.pixelSize: 28
         }
 
+        Text {
+            id: notEnough
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 28
+            font.bold: true
+            color: "white"
+            text: qsTr( "You do not have enough tokens to play this game.\n Please visit a kiosk and add funds first." )
+        }
+
+        Text {
+            id: newGuy
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 28
+            font.bold: true
+            color: "white"
+            text: qsTr( "Please go to a Kiosk and register your account before playing this game!" )
+        }
+
         AnimatedImage {
             id: rfidIcon
             anchors.bottom: parent.bottom
@@ -84,7 +104,6 @@ Item {
                 if ( "idle" == baseView.state )
                 {
 
-                    console.log("hey ", DataManager.tokens, " ", DataManager.tokenCost);
                     if ( DataManager.tokens < DataManager.tokenCost )
                     {
                         baseView.state = "notEnoughTokens";
@@ -151,6 +170,16 @@ Item {
             }
 
             PropertyChanges {
+                target: newGuy
+                visible: false
+            }
+
+            PropertyChanges {
+                target: notEnough
+                visible: false
+            }
+
+            PropertyChanges {
                 target: playGameButton
                 visible: false
             }
@@ -170,7 +199,17 @@ Item {
             }
 
             PropertyChanges {
+                target: newGuy
+                visible: false
+            }
+
+            PropertyChanges {
                 target: rfidIcon
+                visible: false
+            }
+
+            PropertyChanges {
+                target: notEnough
                 visible: false
             }
 
@@ -190,8 +229,13 @@ Item {
             name: "newPlayer"
 
             PropertyChanges {
-                target: header
-                text: qsTr( "Please go to a Kiosk and register your account before playing this game!" )
+                target: newGuy
+                visible: true
+            }
+
+            PropertyChanges {
+                target: notEnough
+                visible: false
             }
 
             PropertyChanges {
@@ -214,8 +258,13 @@ Item {
             name: "notEnoughTokens"
 
             PropertyChanges {
-                target: header
-                text: qsTr( "You don't have enough tokens.\n Please visit a Kiosk to add more tokens to your account." )
+                target: notEnough
+                visible: true
+            }
+
+            PropertyChanges {
+                target: newGuy
+                visible: false
             }
 
             PropertyChanges {
