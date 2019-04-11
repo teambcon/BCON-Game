@@ -30,7 +30,7 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "orange"
+        color: "pink"
 
         AnimatedImage {
             id: skeeBallIcon
@@ -38,50 +38,24 @@ Item {
             anchors.bottomMargin: 100
             anchors.horizontalCenter: parent.horizontalCenter
             source: "qrc:/images/skee-ball.gif"
-            width: 400
-            height: 400
+            width: 500
+            height: 430
 
             MouseArea {
                 id: skeeBallClickable
                 anchors.fill: parent
-                onClicked: playGameOverlay.state = "rollResults"
+                onClicked: if(true) {
+                               stateChangedTimer.start();
+                               playGameOverlay.state = "rollResults"
+                           }
             }
         }
 
-        MenuButton {
-            id: exitButton
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 40
-            buttonWidth: 300
-            buttonHeight: 75
-            buttonText: qsTr( "Close" )
-
-            onClicked: playGameOverlay.visible = false;
-        }
-
-        MenuButton {
-            id: nextRollButton
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 100
-            buttonWidth: 300
-            buttonHeight: 75
-            buttonText: qsTr( "Click for next roll\n" + numberOfRolls + " rolls remaining." )
-
-            onClicked: numberOfRolls == 0? playGameOverlay.state = "gameOver" : playGameOverlay.state = "activePlay";
-        }
-
-        Text {
+        MenuButton2 {
             id: playGameText
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: -225
-            font.pixelSize: 28
-            font.bold: true
-            anchors.bottomMargin: 100
-            color: "blue"
-            text: qsTr( "Click the image to make your roll." )
+            anchors.bottomMargin: 50
+            buttonText: qsTr( "Hey " + DataManager.screenName + "!  Click the image to roll." )
         }
 
         Text {
@@ -90,18 +64,86 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 46
             font.bold: true
-            color: "blue"
-            text: qsTr( "You rolled " + currentRoll + "." )
+            color: "white"
+            text: qsTr( "You rolled " + currentRoll + ".\n\n\nRolls left: " + numberOfRolls + "" )
+            Timer {
+                id: stateChangedTimer
+                interval: 1800
+                running: true
+                repeat: false
+
+                onTriggered:numberOfRolls == 0? playGameOverlay.state = "gameOver" : playGameOverlay.state = "activePlay";
+            }
         }
 
         Text {
             id: gameOverText
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 32
+            anchors.verticalCenterOffset: 285
+            font.pixelSize: 36
             font.bold: true
             color: "black"
-            text: qsTr( "Game over. You scored a total of " + score + " and gained " + score / 10 + " tickets." )
+            text: qsTr( "You scored a total of " + score + " points\n and gained " + score / 10 + " tickets." )
+        }
+
+        Image {
+            id: gameOverImage
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 125
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: "qrc:/images/gameOver.jpg"
+            width: 1250
+            height: 600
+
+
+            MouseArea {
+                id: exitButton
+                anchors.fill: parent
+                onClicked: playGameOverlay.visible = false;
+            }
+        }
+
+        Rectangle {
+            id: skeeRect
+            height: 700
+            width: 125
+            anchors.right: skeeBallIcon.left
+            anchors.rightMargin: 115
+            color: "yellow"
+            border.color: "black"
+            border.width: 6
+            Text {
+                id: skeeRectText
+                anchors.topMargin: -200
+                anchors.leftMargin: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.bold: true
+                font.pixelSize: 135
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr( "S\nK\nE\nE")
+            }
+        }
+
+        Rectangle {
+            id: ballRect
+            height: 700
+            width: 125
+            anchors.left: skeeBallIcon.right
+            anchors.leftMargin: 115
+            color: "yellow"
+            border.color: "black"
+            border.width: 6
+            Text {
+                id: skeeBallText
+                anchors.topMargin: -200
+                anchors.leftMargin: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.bold: true
+                font.pixelSize: 135
+                horizontalAlignment: Text.AlignHCenter
+                text: qsTr( "B\nA\nL\nL")
+            }
         }
 
     }
@@ -112,7 +154,6 @@ Item {
             score += currentRoll;
             numberOfRolls -= 1;
             if(numberOfRolls == 0) {
-                console.log("id ", DataManager.playerId);
                 DataManager.publishStats( score / 10, score );
                 DataManager.deductTokens()
             }
@@ -127,14 +168,25 @@ Item {
                 target: skeeBallIcon
                 visible: true
             }
+
             PropertyChanges {
-                target: playGameText
+                target: skeeRect
                 visible: true
             }
 
             PropertyChanges {
-                target: nextRollButton
-                visible: false
+                target: ballRect
+                visible: true
+            }
+
+            PropertyChanges {
+                target: skeeRectText
+                visible: true
+            }
+
+            PropertyChanges {
+                target: playGameText
+                visible: true
             }
 
             PropertyChanges {
@@ -148,9 +200,10 @@ Item {
             }
 
             PropertyChanges {
-                target: exitButton
+                target: gameOverImage
                 visible: false
             }
+
         },
 
 
@@ -163,13 +216,18 @@ Item {
             }
 
             PropertyChanges {
-                target: playGameText
+                target: skeeRect
                 visible: false
             }
 
             PropertyChanges {
-                target: nextRollButton
-                visible: true
+                target: ballRect
+                visible: false
+            }
+
+            PropertyChanges {
+                target: playGameText
+                visible: false
             }
 
             PropertyChanges {
@@ -183,9 +241,10 @@ Item {
             }
 
             PropertyChanges {
-                target: exitButton
+                target: gameOverImage
                 visible: false
             }
+
         },
 
         State {
@@ -196,13 +255,9 @@ Item {
                 visible: false
             }
 
-            PropertyChanges {
-                target: playGameText
-                visible: false
-            }
 
             PropertyChanges {
-                target: nextRollButton
+                target: playGameText
                 visible: false
             }
 
@@ -212,14 +267,15 @@ Item {
             }
 
             PropertyChanges {
-                target: gameOverText
+                target: gameOverImage
                 visible: true
             }
 
             PropertyChanges {
-                target: exitButton
+                target: gameOverText
                 visible: true
             }
+
         }
 
     ]

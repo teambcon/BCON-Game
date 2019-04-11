@@ -6,5 +6,6 @@
         <file>MenuButton.qml</file>
         <file>PlayGameOverlay.qml</file>
         <file>LookupOverlay.qml</file>
+        <file>MenuButton2.qml</file>
     </qresource>
 </RCC>
