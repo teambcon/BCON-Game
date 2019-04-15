@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/rfid.gif</file>
+        <file>images/skee-ball.gif</file>
+        <file>images/gameOver.jpg</file>
+    </qresource>
+</RCC>
