@@ -4,7 +4,7 @@ A game in the BCON RFID Arcade project.
 
 ## Overview
 
-Within this repo is the implementation of Skee-Ball, one of the BCON RFID Arcade games. However, this repo makes it incredonly easy to extend the project and add more games. 
+Within this repo is the implementation of Skee-Ball, one of the BCON RFID Arcade games. However, this repo makes it incredibly easy to extend the project and add more games. 
 
 The project is built against the [Qt Open Source](https://qt.io) framework, making it easily portable across platforms.
 
